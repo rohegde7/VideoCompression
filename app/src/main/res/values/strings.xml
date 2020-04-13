@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Video Compression</string>
+
+    <string name="select_video">Select Video</string>
+    <string name="unexpected_error_occurred_at_our_end">Unexpected error occurred at our end</string>
+    <string name="enter_bitrate">Enter bitrate</string>
+    <string name="convert">Convert</string>
+    <string name="bitrate">Bitrate : </string>
+
+    <string name="unable_to_play_video">Unable to play video</string>
+    <string name="please_enter_bitrate_and_its_unit">Please enter bitrate and its unit</string>
+
+    <string name="kbps">KBPS</string>
+    <string name="mbps">MBPS</string>
+
+    <string name="select_video_to_compress">Select the video to compress</string>
+
+</resources>
