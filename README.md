@@ -2,7 +2,7 @@
 Assignment given during interview process of TRELL
 
 ### Features:
-* Compressing video files in our local storage system into desired bitrate
+* Compressing video files in our local storage system with desired bitrate
 
 ### Tech and Architecture:
 * We have used __Kotlin__ as the primary programming language
