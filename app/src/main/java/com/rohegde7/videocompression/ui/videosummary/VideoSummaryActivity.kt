@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.activity_video_compression.*
 
 class VideoSummaryActivity : AppCompatActivity() {
 
-    val mViewModel: VideoSummaryVM =
+    private val mViewModel: VideoSummaryVM =
         ViewModelProvider.NewInstanceFactory().create(VideoSummaryVM::class.java)
 
     lateinit var mBinding: ActivityVideoSummaryBinding
@@ -23,7 +23,6 @@ class VideoSummaryActivity : AppCompatActivity() {
 
         mViewModel.extractIntentExtra(intent)
         setUpDataBinding()
-        observeViewModelLiveData()
         initVideoView()
     }
 
@@ -32,12 +31,8 @@ class VideoSummaryActivity : AppCompatActivity() {
         mBinding.vm = mViewModel
     }
 
-    private fun observeViewModelLiveData() {
-
-    }
-
     private fun initVideoView() {
-        val mediaController: MediaController = MediaController(this);
+        val mediaController = MediaController(this);
         mediaController.setAnchorView(video_view)
         video_view.setMediaController(mediaController);
 

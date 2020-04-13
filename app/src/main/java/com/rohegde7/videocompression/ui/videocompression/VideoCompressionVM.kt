@@ -18,19 +18,19 @@ import java.io.File
 
 class VideoCompressionVM : ViewModel() {
 
-    // TODO -> For this screen we do not need a repository as we are not doing any API or DB calls
-    val mRepository = VideoCompressionRepo()
+    private val mRepository = VideoCompressionRepo()
 
-    val mVideoCompressAction = MutableLiveData<VideoCompressionAction>()
+    val mVideoCompressAction: MutableLiveData<VideoCompressionAction>
+        get() = mRepository.mVideoCompressAction
 
     lateinit var mVideoUri: Uri
 
     lateinit var mFilePath: String
 
-    // TODO -> remove hard coded values
+    //  I currently have hard coded the value
     val mBitrate = ObservableField("540")
 
-    // TODO -> make this false
+    //  I have currently made this as true, but later will have to make it false
     val isKbps = ObservableBoolean(true)    // there are currently only 2 -> KBPS and MBPS
 
     lateinit var mFFmpeg: FFmpeg
@@ -47,54 +47,20 @@ class VideoCompressionVM : ViewModel() {
         mVideoCompressAction.value = VideoCompressionAction.COMPRESS_REQUESTED
     }
 
-    fun compress() {
-        val command = CompressUtil.getFfpmpegBitrateCompressionCommand(
-            mBitrate.get()!!,
-            if (isKbps.get()) "K" else "M",
-            mVideoUri.toFile().absolutePath,
-            "$mOutputFileLocation/${File(mFilePath).name}"
-        )
-
-        mFFmpeg.execute(command, object : ExecuteBinaryResponseHandler() {
-
-            override fun onStart() {
-                createFileIfItDoesNotExists()
-                mVideoCompressAction.value = VideoCompressionAction.DISPLAY_PROGRESS
-
-                Log.e("onStart", "")
-            }
-
-            override fun onProgress(message: String) {
-                Log.e("onProgress", message)
-            }
-
-            override fun onFailure(message: String) {
-                val action = VideoCompressionAction.FAILURE
-                action.message = "message"
-
-                Log.e("onFailure", message)
-            }
-
-            override fun onSuccess(message: String) {
-                mVideoCompressAction.value = VideoCompressionAction.COMPRESS_SUCCESS
-
-                Log.e("onSuccess", message)
-            }
-
-            override fun onFinish() {
-//                mVideoCompressAction.value = VideoCompressionAction.COMPRESS_SUCCESS
-
-                Log.e("onFinish", "")
-            }
-        })
-    }
-
     private fun createFileIfItDoesNotExists() {
         val file = File(mOutputFileLocation)
         if (!file.exists()) file.mkdir()
     }
 
     fun onCompressionInitiated() {
-        compress()
+        createFileIfItDoesNotExists()
+
+        mRepository.compressVideo(
+            mBitrate.get()!!,
+            mVideoUri.toFile().absolutePath,
+            "$mOutputFileLocation/${File(mFilePath).name}",
+            isKbps.get(),
+            mFFmpeg
+        )
     }
 }

@@ -8,4 +8,8 @@
     <color name="white">#FFFFFF</color>
 
     <color name="yellow_shade1">#fdd835</color>
+
+    <color name="blue_shade1">#11a7d1</color>
+    <color name="blue_shade2">#0096c5</color>
+    <color name="blue_shade3">#0089b3</color>
 </resources>

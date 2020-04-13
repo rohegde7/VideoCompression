@@ -1,12 +1,8 @@
 package com.rohegde7.videocompression.ui.videoselection
 
 import android.content.Intent
-import android.database.Cursor
 import android.os.Bundle
-import android.provider.MediaStore
-import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.PermissionChecker.PERMISSION_GRANTED
 import androidx.databinding.DataBindingUtil
@@ -20,12 +16,10 @@ import com.rohegde7.videocompression.contants.COMPRESS_VIDEO
 import com.rohegde7.videocompression.contants.SELECTED_VIDEO_FILE_PATH
 import com.rohegde7.videocompression.databinding.ActivityVideoSelectionBinding
 import com.rohegde7.videocompression.livedataenums.VideoSelectionAction
-import com.rohegde7.videocompression.pojos.Video
 import com.rohegde7.videocompression.ui.videocompression.VideoCompressionActivity
 import com.rohegde7.videocompression.util.PermissionUtil
 import com.rohegde7.videocompression.util.UiUtil
 import kotlinx.android.synthetic.main.activity_video_selection.*
-
 
 class VideoSelectionActivity : AppCompatActivity(), ClickListener {
 
@@ -110,27 +104,7 @@ class VideoSelectionActivity : AppCompatActivity(), ClickListener {
     }
 
     private fun fetchAllVideosFromStorage() {
-        val videoList = ArrayList<Video>()
-
-        val contentResolver = contentResolver
-        val uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-
-        val cursor: Cursor? = contentResolver.query(uri, null, null, null, null)
-
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                val filePath: String =
-                    cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA))
-                val title: String =
-                    cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.TITLE))
-
-                val video = Video(filePath, title)
-                videoList.add(video)
-
-            } while (cursor.moveToNext())
-        }
-
-        mAdapter.updateVideoList(videoList)
+        mAdapter.updateVideoList(mViewModel.fetchAllVideosFromStorage(contentResolver))
     }
 
     private fun initRecyclerView() {
