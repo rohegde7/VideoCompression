@@ -2,7 +2,6 @@ package com.rohegde7.videocompression.ui.videocompression
 
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import androidx.core.net.toFile
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -11,8 +10,6 @@ import androidx.lifecycle.ViewModel
 import com.rohegde7.videocompression.application.VideoCompressionApplication
 import com.rohegde7.videocompression.contants.SELECTED_VIDEO_FILE_PATH
 import com.rohegde7.videocompression.livedataenums.VideoCompressionAction
-import com.rohegde7.videocompression.util.CompressUtil
-import nl.bravobit.ffmpeg.ExecuteBinaryResponseHandler
 import nl.bravobit.ffmpeg.FFmpeg
 import java.io.File
 
@@ -47,13 +44,13 @@ class VideoCompressionVM : ViewModel() {
         mVideoCompressAction.value = VideoCompressionAction.COMPRESS_REQUESTED
     }
 
-    private fun createFileIfItDoesNotExists() {
+    private fun createOutputFolderIfItDoesNotExists() {
         val file = File(mOutputFileLocation)
         if (!file.exists()) file.mkdir()
     }
 
     fun onCompressionInitiated() {
-        createFileIfItDoesNotExists()
+        createOutputFolderIfItDoesNotExists()
 
         mRepository.compressVideo(
             mBitrate.get()!!,

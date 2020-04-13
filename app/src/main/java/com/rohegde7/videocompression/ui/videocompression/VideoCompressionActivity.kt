@@ -1,7 +1,6 @@
 package com.rohegde7.videocompression.ui.videocompression
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.widget.MediaController
 import android.widget.Toast
